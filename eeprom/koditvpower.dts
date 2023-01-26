@@ -1,0 +1,74 @@
+/dts-v1/;
+/plugin/;
+
+/ {
+	compatible = "brcm,bcm2708";
+
+	fragment@0 {
+		target = <&gpio>;
+		__overlay__ {
+			pin_state_shutdown: shutdown_button_pins {
+				brcm,pins = <2>; // gpio number
+				brcm,function = <0>; // 0 = input, 1 = output
+				brcm,pull = <2>; // 0 = none, 1 = pull down, 2 = pull up
+			};
+			pin_state_reboot: reboot_button_pins {
+				brcm,pins = <4>; // gpio number
+				brcm,function = <0>; // 0 = input, 1 = output
+				brcm,pull = <2>; // 0 = none, 1 = pull down, 2 = pull up
+			};
+		};
+	};
+	fragment@1 {
+		target-path = "/soc";
+		__overlay__ {
+			shutdown_button {
+				compatible = "gpio-keys";
+
+				pinctrl-names = "default";
+				pinctrl-0 = <&pin_state_shutdown>;
+
+				status = "okay";
+				button_shutdown: shutdown {
+					label = "shutdown";
+					linux,code = <116>; // KEY_POWER
+					gpios = <&gpio 2 1>;
+				};
+			};
+			reboot_button {
+				compatible = "gpio-keys";
+
+				pinctrl-names = "default";
+				pinctrl-0 = <&pin_state_reboot>;
+
+				status = "okay";
+				button_reboot: reboot {
+					label = "reboot";
+					linux,code = <408>; // KEY_RESTART
+					gpios = <&gpio 4 1>;
+				};
+			};
+		};
+	};
+	
+	fragment@2 {
+		target-path = "/";
+		__overlay__ {
+			power_ctrl: power_ctrl {
+				compatible = "gpio-poweroff";
+				gpios = <&gpio 3 0>;
+				force;
+			};
+		};
+	};
+
+	fragment@3 {
+		target = <&gpio>;
+		__overlay__ {
+			power_ctrl_pins: power_ctrl_pins {
+				brcm,pins = <3>;
+				brcm,function = <1>; // out
+			};
+		};
+	};
+};

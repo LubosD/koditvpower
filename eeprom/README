@@ -1,0 +1,16 @@
+Compiling device tree plugin:
+
+dtc -@ -I dts -O dtb -o koditvpower.dtb koditvpower.dts
+
+Building the EEP file:
+
+eepmake eeprom_settings.txt koditvpower.eep koditvpower.dtb
+
+Flashing the EEPROM:
+
+modprobe i2c_dev
+eepflash.sh -w -f koditvpower.eep -t=24c32
+
+Empty flash memory EEP:
+
+dd if=/dev/zero ibs=1k count=4 of=blank.eep
