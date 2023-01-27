@@ -17,6 +17,10 @@
 				brcm,function = <0>; // 0 = input, 1 = output
 				brcm,pull = <2>; // 0 = none, 1 = pull down, 2 = pull up
 			};
+			power_ctrl_pins: power_ctrl_pins {
+				brcm,pins = <17>;
+				brcm,function = <1>; // out
+			};
 		};
 	};
 	fragment@1 {
@@ -56,18 +60,9 @@
 		__overlay__ {
 			power_ctrl: power_ctrl {
 				compatible = "gpio-poweroff";
-				gpios = <&gpio 3 0>;
+				gpios = <&gpio 17 0>;
+				active-delay-ms = <3000>;
 				force;
-			};
-		};
-	};
-
-	fragment@3 {
-		target = <&gpio>;
-		__overlay__ {
-			power_ctrl_pins: power_ctrl_pins {
-				brcm,pins = <3>;
-				brcm,function = <1>; // out
 			};
 		};
 	};
