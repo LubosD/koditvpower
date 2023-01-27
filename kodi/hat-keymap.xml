@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<keymap>
+  <global>
+    <keyboard>
+      <power>Powerdown</power>
+      <long-power>Powerdown</long-power>
+      <key id="61952">Reboot</key>
+      <key id="16839168">Reboot</key>
+    </keyboard>
+  </global>
+</keymap>
